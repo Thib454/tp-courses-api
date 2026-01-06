@@ -51,26 +51,34 @@ Swagger : http://localhost:3000/api-docs
 
 ## 📌 Routes disponibles
 
-Authentification
-Méthode	Endpoint	Description	Accès
-POST	/auth/register	Inscription d’un nouvel utilisateur	Public
-POST	/auth/login	Connexion et génération du JWT	Public
+### Authentification
 
-Cours (Course)
-Méthode	Endpoint	Description	Accès
-GET	/courses	Récupérer tous les cours publiés	Public
-GET	/courses/:id	Récupérer un cours par son ID	Public
-GET	/courses/level/:level	Récupérer les cours par niveau	Public
-POST	/courses	Créer un cours	Instructor/Admin
-PUT	/courses/:id	Modifier un cours	Instructor/Admin
-DELETE	/courses/:id	Supprimer un cours	Admin
+| Méthode | Endpoint        | Description                          | Accès  |
+|---------|----------------|--------------------------------------|--------|
+| POST    | /auth/register | Inscription d’un nouvel utilisateur | Public |
+| POST    | /auth/login    | Connexion et génération du JWT       | Public |
 
-Catégories (Category)
-Méthode	Endpoint	Description	Accès
-GET	/categories	Récupérer toutes les catégories	Public
-GET	/categories/:id	Récupérer une catégorie avec ses cours	Public
-POST	/categories	Créer une nouvelle catégorie	Admin
+### Cours (Course)
 
-Utilisateurs (User)
-Méthode	Endpoint	Description	Accès
-GET	/users	Récupérer tous les utilisateurs	Admin
+| Méthode | Endpoint                | Description                          | Accès            |
+|---------|------------------------|--------------------------------------|----------------|
+| GET     | /courses               | Récupérer tous les cours publiés     | Public         |
+| GET     | /courses/:id           | Récupérer un cours par son ID       | Public         |
+| GET     | /courses/level/:level  | Récupérer les cours par niveau      | Public         |
+| POST    | /courses               | Créer un cours                       | Instructor/Admin |
+| PUT     | /courses/:id           | Modifier un cours                    | Instructor/Admin |
+| DELETE  | /courses/:id           | Supprimer un cours                   | Admin          |
+
+### Catégories (Category)
+
+| Méthode | Endpoint           | Description                           | Accès |
+|---------|------------------|---------------------------------------|-------|
+| GET     | /categories       | Récupérer toutes les catégories      | Public |
+| GET     | /categories/:id   | Récupérer une catégorie avec ses cours | Public |
+| POST    | /categories       | Créer une nouvelle catégorie         | Admin  |
+
+### Utilisateurs (User)
+
+| Méthode | Endpoint | Description                    | Accès |
+|---------|---------|--------------------------------|-------|
+| GET     | /users  | Récupérer tous les utilisateurs | Admin |
