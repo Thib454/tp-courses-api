@@ -23,6 +23,7 @@ app.use('/users', userRouter);
 
 const initDatabase = async () => {
   try {
+    require('./config/associations');
     await db.sync({ alter: true });
     console.log('Base de données initialisée');
 
