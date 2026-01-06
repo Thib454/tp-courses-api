@@ -64,7 +64,6 @@ Swagger : http://localhost:3000/api-docs
 |---------|------------------------|--------------------------------------|----------------|
 | GET     | /courses               | Récupérer tous les cours publiés     | Public         |
 | GET     | /courses/:id           | Récupérer un cours par son ID       | Public         |
-| GET     | /courses/level/:level  | Récupérer les cours par niveau      | Public         |
 | POST    | /courses               | Créer un cours                       | Instructor/Admin |
 | PUT     | /courses/:id           | Modifier un cours                    | Instructor/Admin |
 | DELETE  | /courses/:id           | Supprimer un cours                   | Admin          |
