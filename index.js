@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const db = require('./config/database');
 const authRouter = require('./router/authRouter');
+const User = require('./model/User');
+const userRouter = require('./router/userRouter');
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerSpec = require('./config/swagger');
 
@@ -14,6 +16,7 @@ app.use(express.json());
 
 // Routes
 app.use('/auth', authRouter);
+app.use('/users', userRouter);
 
 // Swagger (à activer une fois swagger.js créé)
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
