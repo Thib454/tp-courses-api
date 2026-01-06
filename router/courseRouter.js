@@ -1,7 +1,8 @@
 const express = require('express');
 const courseController = require('../controller/courseController');
 const { authenticateToken, authorizeRole } = require('../middleware/auth');
-const { body, param } = require('express-validator');
+const { createCourseValidator, updateCourseValidator } = require('../validators/courseValidator');
+const { validationResult } = require('express-validator');
 
 const router = express.Router();
 
@@ -47,6 +48,42 @@ router.get('/:id', courseController.getCourseById);
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     CourseInput:
+ *       type: object
+ *       required:
+ *         - title
+ *         - description
+ *         - duration
+ *         - level
+ *         - price
+ *         - instructor
+ *         - categoryId
+ *       properties:
+ *         title:
+ *           type: string
+ *           minLength: 3
+ *         description:
+ *           type: string
+ *           minLength: 10
+ *         duration:
+ *           type: integer
+ *           minimum: 1
+ *         level:
+ *           type: string
+ *           enum: ["débutant", "intermédiaire", "avancé"]
+ *         price:
+ *           type: number
+ *           minimum: 0
+ *         instructor:
+ *           type: string
+ *         categoryId:
+ *           type: integer
+ */
+
+/**
+ * @swagger
  * /courses:
  *   post:
  *     summary: Créer un cours (instructor ou admin)
@@ -58,33 +95,7 @@ router.get('/:id', courseController.getCourseById);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - title
- *               - description
- *               - duration
- *               - level
- *               - price
- *               - instructor
- *               - categoryId
- *             properties:
- *               title:
- *                 type: string
- *               description:
- *                 type: string
- *               duration:
- *                 type: integer
- *               level:
- *                 type: string
- *                 enum: [débutant, intermédiaire, avancé]
- *               price:
- *                 type: number
- *               published:
- *                 type: boolean
- *               instructor:
- *                 type: string
- *               categoryId:
- *                 type: integer
+ *             $ref: '#/components/schemas/CourseInput'
  *     responses:
  *       201:
  *         description: Cours créé
@@ -99,14 +110,12 @@ router.post(
   '/',
   authenticateToken,
   authorizeRole('instructor', 'admin'),
-  body('title').isLength({ min: 3 }),
-  body('description').isLength({ min: 10 }),
-  body('duration').isInt({ min: 1 }),
-  body('level').isIn(['débutant', 'intermédiaire', 'avancé']),
-  body('price').isFloat({ min: 0 }),
-  body('instructor').notEmpty(),
-  body('categoryId').isInt(),
-  courseController.createCourse
+  createCourseValidator,
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    courseController.createCourse(req, res, next);
+  }
 );
 
 /**
@@ -129,25 +138,7 @@ router.post(
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               description:
- *                 type: string
- *               duration:
- *                 type: integer
- *               level:
- *                 type: string
- *                 enum: [débutant, intermédiaire, avancé]
- *               price:
- *                 type: number
- *               published:
- *                 type: boolean
- *               instructor:
- *                 type: string
- *               categoryId:
- *                 type: integer
+ *             $ref: '#/components/schemas/CourseInput'
  *     responses:
  *       200:
  *         description: Cours mis à jour
@@ -160,7 +151,17 @@ router.post(
  *       404:
  *         description: Cours non trouvé
  */
-router.put('/:id', authenticateToken, authorizeRole('instructor','admin'), courseController.updateCourse);
+router.put(
+  '/:id',
+  authenticateToken,
+  authorizeRole('instructor', 'admin'),
+  updateCourseValidator,
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    courseController.updateCourse(req, res, next);
+  }
+);
 
 /**
  * @swagger

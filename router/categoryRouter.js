@@ -1,7 +1,8 @@
 const express = require('express');
 const categoryController = require('../controller/categoryController');
 const { authenticateToken, authorizeRole } = require('../middleware/auth');
-const { body, param } = require('express-validator');
+const { createCategoryValidator } = require('../validators/categoryValidator');
+const { validationResult } = require('express-validator');
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ const router = express.Router();
  * @swagger
  * /categories:
  *   get:
- *     summary: Récupérer toutes les catégories avec leurs cours
+ *     summary: Récupérer toutes les catégories
  *     tags: [Categories]
  *     responses:
  *       200:
@@ -28,7 +29,7 @@ router.get('/', categoryController.getAllCategories);
  * @swagger
  * /categories/{id}:
  *   get:
- *     summary: Récupérer une catégorie par ID avec ses cours
+ *     summary: Récupérer une catégorie par ID
  *     tags: [Categories]
  *     parameters:
  *       - in: path
@@ -49,7 +50,7 @@ router.get('/:id', categoryController.getCategoryById);
  * @swagger
  * /categories:
  *   post:
- *     summary: Créer une nouvelle catégorie (admin seulement)
+ *     summary: Créer une catégorie (admin seulement)
  *     tags: [Categories]
  *     security:
  *       - bearerAuth: []
@@ -76,12 +77,10 @@ router.get('/:id', categoryController.getCategoryById);
  *       403:
  *         description: Accès refusé
  */
-router.post(
-  '/',
-  authenticateToken,
-  authorizeRole('admin'),
-  body('name').isLength({ min: 3 }).withMessage('Name min 3 caractères'),
-  categoryController.createCategory
-);
+router.post('/', authenticateToken, authorizeRole('admin'), createCategoryValidator, (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+  categoryController.createCategory(req, res, next);
+});
 
 module.exports = router;

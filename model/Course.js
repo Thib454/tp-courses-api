@@ -34,7 +34,7 @@ const Course = db.define('Course', {
   },
   published: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false
+    defaultValue: true
   },
   instructor: {
     type: DataTypes.STRING,
