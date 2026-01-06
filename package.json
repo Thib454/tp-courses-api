@@ -1,0 +1,27 @@
+{
+  "name": "tp-courses-api",
+  "version": "1.0.0",
+  "description": "Création d'une API REST pour la gestion de cours en ligne",
+  "homepage": "https://github.com/Thib454/tp-courses-api#readme",
+  "bugs": {
+    "url": "https://github.com/Thib454/tp-courses-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thib454/tp-courses-api.git"
+  },
+  "license": "ISC",
+  "author": "Thibault",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  }
+}
